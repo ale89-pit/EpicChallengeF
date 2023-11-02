@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { AiOutlineUser } from "react-icons/ai";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getProfile } from "../redux/actions";
+import { useAppDispatch } from "../redux/app/hooks";
 
 const NavbarComponent = () => {
   return (
@@ -93,9 +96,12 @@ function RegisterModal() {
           "Content-Type": "application/json",
         },
       });
+
       if (response.ok) {
-        let data = await response.text();
-        console.log(data);
+        alert("Check your email to activate account.");
+      } else {
+        let error = await response.json();
+        alert(error.message);
       }
     } catch (error) {
       console.log("ERRORE: " + error);
@@ -228,6 +234,7 @@ function LoginModal() {
   const [show, setShow] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch = useAppDispatch();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -247,8 +254,12 @@ function LoginModal() {
       });
       if (response.ok) {
         let data = await response.json();
-        localStorage.setItem("token", data);
+        localStorage.setItem("token", data.accessToken);
+        let pippo: any = dispatch(getProfile(data.username));
+        pippo();
         console.log(data);
+      } else {
+        alert("Wrong credentials");
       }
     } catch (error) {
       console.log("ERRORE: " + error);
