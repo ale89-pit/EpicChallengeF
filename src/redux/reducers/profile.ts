@@ -1,6 +1,5 @@
 import type { RootState } from "../store/index";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SET_PROFILE } from "../actions/index";
+
 
 export interface Profile {
   id: number | null;
@@ -28,17 +27,19 @@ const initialState: { profile: Profile } = {
     roles: [],
     booklist: {},
   },
+  
 };
 
-export const profileReducer = createSlice({
-  name: "profile",
-  initialState,
-  reducers: {
-    setProfile: (state, action: PayloadAction<Profile>) => {
-      state.profile = action.payload;
-    },
-  },
-});
-export const { setProfile } = profileReducer.actions;
+
+
+export const profileReducer = (state = initialState ,action : any) => {
+  switch(action.type){
+    case "SET_PROFILE":
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 export const selectProfile = (state: RootState) => state.profile;
-export default profileReducer.reducer;
+

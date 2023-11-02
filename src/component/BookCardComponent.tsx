@@ -38,7 +38,7 @@ function BookCardComponent(props: bookProps) {
         }
       />
       <Card.Body>
-        <Card.Title className="text-center">{props.book.title}</Card.Title>
+        <Card.Title className="text-center text-truncate">{props.book.title}</Card.Title>
         <Card.Text>
           <span className="fw-bold">isbn: </span>
           {props.book.isbn}

@@ -2,7 +2,6 @@ import { Profile } from "../reducers/profile";
 export const SET_PROFILE = "SET_PROFILE";
 
 export const setProfile = (profileData: Profile) => {
-  console.log("SET PROFILE: " + profileData);
   return {
     type: SET_PROFILE,
     payload: profileData,
