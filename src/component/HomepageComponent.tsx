@@ -12,7 +12,8 @@ function HomePageComponent() {
       let response = await fetch(`http://localhost:8080/book/all`, {});
       if (response.ok) {
         let data = await response.json();
-        setAllBooks(data);
+        console.log(data);
+        setAllBooks(data.content);
         setIsLoading(false);
       } else {
         console.log("Errore nella ricezione dei dati");
@@ -26,6 +27,12 @@ function HomePageComponent() {
     getBooks();
   }, []);
 
-  return <div>CIAO</div>;
+  return (
+    <div>
+      {allBooks.map((item) => (
+        <BookCardComponent book={item} />
+      ))}
+    </div>
+  );
 }
 export default HomePageComponent;
