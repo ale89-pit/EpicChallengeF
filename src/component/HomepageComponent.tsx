@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import BookCardComponent from "./BookCardComponent";
 import { Book } from "../interfaces/Book";
+import CarouselComponent from "./CarouselComponent";
 
 function HomePageComponent() {
   const [allBooks, setAllBooks] = useState<Book[]>([]);
@@ -28,10 +28,9 @@ function HomePageComponent() {
   }, []);
 
   return (
-    <div>
-      {allBooks.map((item) => (
-        <BookCardComponent book={item} />
-      ))}
+    <div className="mt-3">
+      <h1 className="ms-2"> New Releases</h1>
+      <CarouselComponent items={allBooks} />
     </div>
   );
 }

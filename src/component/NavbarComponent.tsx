@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { AiOutlineUser } from "react-icons/ai";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { getProfile } from "../redux/actions";
+import { getProfile, setProfile } from "../redux/actions";
 import { useAppDispatch } from "../redux/app/hooks";
+import { Profile } from "../redux/reducers/profile";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const NavbarComponent = () => {
+  const currentProfile: Profile = useSelector((state: RootState) => state.profile);
+  console.log(currentProfile);
   return (
     <Navbar expand="lg" data-bs-theme="dark" className="bg-danger">
       <Container fluid>
@@ -28,11 +32,25 @@ const NavbarComponent = () => {
                   <div className="nav-link me-2">Books</div>
                 </Link>
               </span>
-              <span>
-                <NavDropdown title={<AiOutlineUser />} className="d-flex align-items-center text-decoration-none">
-                  <ul>
-                    <RegisterModal />
-                    <LoginModal />
+              <span className="me-5 pe-4">
+                <NavDropdown
+                  title={
+                    <>
+                      {currentProfile.id ? currentProfile.name || currentProfile.fullname : "Profile"}
+                      <AiOutlineUser className="ms-1" />
+                    </>
+                  }
+                  className="d-flex align-items-center text-decoration-none"
+                >
+                  <ul className="">
+                    {!currentProfile.id ? (
+                      <>
+                        <RegisterModal />
+                        <LoginModal />
+                      </>
+                    ) : (
+                      <LogoutButton />
+                    )}
                   </ul>
                 </NavDropdown>
               </span>
@@ -51,11 +69,17 @@ const NavbarComponent = () => {
                   <div className="nav-link me-2">Books</div>
                 </Link>
               </span>
-              <span>
-                <AiOutlineUser />
-                <ul className="me-5 text-decoration-none">
-                  <RegisterModal />
-                  <LoginModal />
+              <span className="text-light">
+                {currentProfile.id ? currentProfile.name || currentProfile.fullname : <AiOutlineUser />}
+                <ul className="ps-0 text-decoration-none">
+                  {!currentProfile.id ? (
+                    <>
+                      <RegisterModal />
+                      <LoginModal />
+                    </>
+                  ) : (
+                    <LogoutButton />
+                  )}
                 </ul>
               </span>
             </span>
@@ -255,9 +279,7 @@ function LoginModal() {
       if (response.ok) {
         let data = await response.json();
         localStorage.setItem("token", data.accessToken);
-        let pippo: any = dispatch(getProfile(data.username));
-        pippo();
-        console.log(data);
+        dispatch(getProfile(data.username));
       } else {
         alert("Wrong credentials");
       }
@@ -306,5 +328,31 @@ function LoginModal() {
         </Modal.Footer>
       </Modal>
     </>
+  );
+}
+
+function LogoutButton() {
+  const dispatch = useAppDispatch();
+  const logout = () => {
+    localStorage.removeItem("token");
+    dispatch(
+      setProfile({
+        id: null,
+        name: "",
+        fullname: "",
+        username: "",
+        email: "",
+        phone: null,
+        address: "",
+        isActive: false,
+        roles: [],
+        booklist: {},
+      })
+    );
+  };
+  return (
+    <li className="nav-link list-unstyled" onClick={logout}>
+      Logout
+    </li>
   );
 }

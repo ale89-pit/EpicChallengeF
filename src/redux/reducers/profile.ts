@@ -1,6 +1,5 @@
 import type { RootState } from "../store/index";
 
-
 export interface Profile {
   id: number | null;
   name: string;
@@ -14,7 +13,7 @@ export interface Profile {
   booklist: {};
 }
 
-const initialState: { profile: Profile } = {
+export const initialState: { profile: Profile } = {
   profile: {
     id: null,
     name: "",
@@ -27,19 +26,15 @@ const initialState: { profile: Profile } = {
     roles: [],
     booklist: {},
   },
-  
 };
 
-
-
-export const profileReducer = (state = initialState ,action : any) => {
-  switch(action.type){
+export const profileReducer = (state = initialState, action: any) => {
+  switch (action.type) {
     case "SET_PROFILE":
       return action.payload;
     default:
       return state;
   }
-}
+};
 
 export const selectProfile = (state: RootState) => state.profile;
-
