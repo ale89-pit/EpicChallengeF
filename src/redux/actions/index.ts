@@ -1,6 +1,15 @@
 import { Profile } from "../reducers/profile";
 export const SET_PROFILE = "SET_PROFILE";
+export const UPDATE_PROFILE_FIELD = "UPDATE_PROFILE_FIELD";
 
+
+export const updateProfileField = (fieldName :string, value:string) => {
+  return {
+    type: UPDATE_PROFILE_FIELD,
+    fieldName,
+    value
+  };
+}
 export const setProfile = (profileData: Profile) => {
   return {
     type: SET_PROFILE,
