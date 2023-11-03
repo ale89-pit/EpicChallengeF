@@ -2,7 +2,6 @@ import type { RootState } from "../store/index";
 import {UPDATE_PROFILE_FIELD} from "../actions/index";
 import { Address } from "../../interfaces/Address";
 
-
 export interface Profile {
   id: number | null;
   name: string;
@@ -17,7 +16,7 @@ export interface Profile {
  
 }
 
-const initialState: { profile: Profile } = {
+export const initialState: { profile: Profile } = {
   profile: {
     id: null,
     name: "",
@@ -53,10 +52,8 @@ const initialState: { profile: Profile } = {
  
 };
 
-
-
-export const profileReducer = (state = initialState ,action : any) => {
-  switch(action.type){
+export const profileReducer = (state = initialState, action: any) => {
+  switch (action.type) {
     case "SET_PROFILE":
       return action.payload;
     case UPDATE_PROFILE_FIELD:
@@ -70,7 +67,6 @@ export const profileReducer = (state = initialState ,action : any) => {
     default:
       return state;
   }
-}
+};
 
 export const selectProfile = (state: RootState) => state.profile;
-

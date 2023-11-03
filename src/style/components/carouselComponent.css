@@ -11871,13 +11871,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-.card {
-  width: 200px !important;
-  margin: 3em !important;
-  padding: 1rem !important;
-  border-radius: 1rem;
-}
-
 .carouselCard {
   height: 350px;
   margin: 0.5em !important;
@@ -11896,4 +11889,4 @@ textarea.form-control-lg {
   overflow: scroll;
   margin: 0em;
   padding: 0em;
-}/*# sourceMappingURL=App.css.map */
+}/*# sourceMappingURL=carouselComponent.css.map */

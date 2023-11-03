@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import BookCardComponent from "./BookCardComponent";
 import { Book } from "../interfaces/Book";
-import { Link, useNavigate } from "react-router-dom";
+import CarouselComponent from "./CarouselComponent";
 
 function HomePageComponent() {
   const [allBooks, setAllBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const navigate = useNavigate();
+ 
 
   const getBooks = async () => {
     try {
@@ -30,11 +29,9 @@ function HomePageComponent() {
   }, []);
 
   return (
-    <div>
-      <Link to="/profile">profile</Link>
-      {allBooks.map((item) => (
-        <BookCardComponent book={item} />
-      ))}
+    <div className="mt-3">
+      <h1 className="ms-2"> New Releases</h1>
+      <CarouselComponent items={allBooks} />
     </div>
   );
 }
