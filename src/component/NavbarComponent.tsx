@@ -342,8 +342,28 @@ function LogoutButton() {
         fullname: "",
         username: "",
         email: "",
-        phone: null,
-        address: "",
+        phone: "",
+        address: {
+          id: null,
+          municipality: {
+            id: "",
+            province_id:"",
+            municipality_id:"",
+            name: "",
+            province: {
+              
+              sign: "",
+              name: "",
+              region: "",
+            }
+          },
+          street: "",
+          number: "",
+          km: "",
+          description: "",
+          lat: "",
+          lon: "",
+        },
         isActive: false,
         roles: [],
         booklist: {},
