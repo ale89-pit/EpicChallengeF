@@ -5,6 +5,7 @@ import "./style/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import HomePageComponent from "./component/HomepageComponent";
+import BookDetailsPage from "./component/BookDetailsPage";
 import UserorLibraryDetails from "./component/UserOrLibraryDetails";
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
         <NavbarComponent />
         <Routes>
           <Route path="/" element={<HomePageComponent />}></Route>
-          <Route path="/profile" element={<UserorLibraryDetails />}/>
+          <Route path="/profile" element={<UserorLibraryDetails />} />
+          <Route path="/details/:isbn" element={<BookDetailsPage />} />
         </Routes>
       </div>
     </BrowserRouter>

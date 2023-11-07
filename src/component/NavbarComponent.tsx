@@ -8,6 +8,7 @@ import { useAppDispatch } from "../redux/app/hooks";
 import { Profile } from "../redux/reducers/profile";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { initialState } from "../redux/reducers/profile";
 
 const NavbarComponent = () => {
   const currentProfile: Profile = useSelector((state: RootState) => state.profile);
@@ -49,7 +50,12 @@ const NavbarComponent = () => {
                         <LoginModal />
                       </>
                     ) : (
-                      <LogoutButton />
+                      <>
+                        <LogoutButton />
+                        <Link to="/profile" className="text-decoration-none nav-link list-unstyled">
+                          Profile
+                        </Link>
+                      </>
                     )}
                   </ul>
                 </NavDropdown>
@@ -78,7 +84,12 @@ const NavbarComponent = () => {
                       <LoginModal />
                     </>
                   ) : (
-                    <LogoutButton />
+                    <>
+                      <LogoutButton />
+                      <Link to="/profile" className="text-decoration-none nav-link list-unstyled">
+                        Profile
+                      </Link>
+                    </>
                   )}
                 </ul>
               </span>
@@ -335,40 +346,7 @@ function LogoutButton() {
   const dispatch = useAppDispatch();
   const logout = () => {
     localStorage.removeItem("token");
-    dispatch(
-      setProfile({
-        id: null,
-        name: "",
-        fullname: "",
-        username: "",
-        email: "",
-        phone: "",
-        address: {
-          id: null,
-          municipality: {
-            id: "",
-            province_id:"",
-            municipality_id:"",
-            name: "",
-            province: {
-              
-              sign: "",
-              name: "",
-              region: "",
-            }
-          },
-          street: "",
-          number: "",
-          km: "",
-          description: "",
-          lat: "",
-          lon: "",
-        },
-        isActive: false,
-        roles: [],
-        booklist: {},
-      })
-    );
+    dispatch(setProfile(initialState.profile));
   };
   return (
     <li className="nav-link list-unstyled" onClick={logout}>

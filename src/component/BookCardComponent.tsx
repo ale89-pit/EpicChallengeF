@@ -1,5 +1,5 @@
-import { Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Col, Row } from "react-bootstrap";
+
 import { Book } from "../interfaces/Book";
 import { useEffect, useState } from "react";
 
@@ -26,41 +26,35 @@ function BookCardComponent(props: bookProps) {
     getCover();
   }, []);
   return (
-    <Card className="text-start d-inline-block carouselCard">
-      <Card.Img
-        className="card-img"
-        variant="top"
-        src={cover}
-        alt={"book" + props.book.isbn}
-        onError={(event) =>
-          (event.currentTarget.src =
-            "https://cdn.icon-icons.com/icons2/1189/PNG/512/1490793840-user-interface33_82361.png")
-        }
-      />
-      <Card.Body>
-        <Card.Title className="text-center text-truncate">{props.book.title}</Card.Title>
-        <Card.Text>
-          <span className="fw-bold">isbn: </span>
-          {props.book.isbn}
-          <br></br>
-          <span className="fw-bolder">Author: </span>
-          {props.book.author} <br></br>
-          <span className="fw-bolder">Category: </span>
-          {props.book.category} <br></br>
-          <span className="fw-bolder">Language: </span>
-          {props.book.language} <br></br>
-          <span className="fw-bolder">Publisher: </span>
-          {props.book.publisher} <br></br>
-          <span className="fw-bolder">Author: </span>
-          {props.book.author} <br></br>
-          <span className="fw-bolder">Published date: </span>
-          {props.book.publishedYear} <br></br>
-        </Card.Text>
-        <Link to={`/details/${props.book.isbn}`}>
-          <div className="btn btn-success">details</div>
-        </Link>
-      </Card.Body>
-    </Card>
+    <Row>
+      <Col xs={12} sm={4} className="text-center">
+        <img
+          className="w-75"
+          src={cover}
+          alt={"book" + props.book.isbn}
+          onError={(event) =>
+            (event.currentTarget.src =
+              "https://cdn.icon-icons.com/icons2/1189/PNG/512/1490793840-user-interface33_82361.png")
+          }
+        />
+      </Col>
+      <Col xs={8} sm={6}>
+        <h3 className="mt-5 mb-3">{props.book.title}</h3>
+        <span className="fw-bold">ISBN: </span>
+        {props.book.isbn}
+        <br />
+        <span className="fw-bolder">AUTHOR: </span>
+        {props.book.author} <br />
+        <span className="fw-bolder">CATEGORY: </span>
+        {props.book.category} <br />
+        <span className="fw-bolder">LANGUAGE: </span>
+        {props.book.language} <br />
+        <span className="fw-bolder">PUBLISHER: </span>
+        {props.book.publisher} <br />
+        <span className="fw-bolder">PUBLISHED DATE: </span>
+        {props.book.publishedYear} <br />
+      </Col>
+    </Row>
   );
 }
 

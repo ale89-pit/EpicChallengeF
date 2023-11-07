@@ -1,5 +1,5 @@
 import type { RootState } from "../store/index";
-import {UPDATE_PROFILE_FIELD} from "../actions/index";
+import { UPDATE_PROFILE_FIELD } from "../actions/index";
 import { Address } from "../../interfaces/Address";
 
 export interface Profile {
@@ -8,12 +8,11 @@ export interface Profile {
   fullname: string;
   username: string;
   email: string;
-  phone: string ;
-  address: Address,
+  phone: string;
+  address: Address;
   isActive: boolean;
   roles: { id: number; roleName: string }[];
   booklist: {};
- 
 }
 
 export const initialState: { profile: Profile } = {
@@ -28,15 +27,14 @@ export const initialState: { profile: Profile } = {
       id: null,
       municipality: {
         id: "",
-        province_id:"",
-        municipality_id:"",
+        province_id: "",
+        municipality_id: "",
         name: "",
         province: {
-          
           sign: "",
           name: "",
           region: "",
-        }
+        },
       },
       street: "",
       number: "",
@@ -58,12 +56,11 @@ export const profileReducer = (state = initialState, action: any) => {
       return action.payload;
     case UPDATE_PROFILE_FIELD:
       return {
-
         profile: {
           ...state.profile,
-        [action.fieldName]: action.value
-      }
-    } 
+          [action.fieldName]: action.value,
+        },
+      };
     default:
       return state;
   }
