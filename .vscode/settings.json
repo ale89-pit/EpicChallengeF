@@ -1,0 +1,14 @@
+{
+  "liveSassCompile.settings.partialsList": [
+    "/**/_*.s[ac]ss",
+    "/src/style/components"
+  ],
+  "liveSassCompile.settings.formats": [
+    {
+      "format": "expanded",
+      "extensionName": ".css",
+      "savePath": null,
+      "savePathReplacementPairs": null
+    }
+  ]
+}
