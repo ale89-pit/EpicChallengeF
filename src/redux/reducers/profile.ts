@@ -47,20 +47,13 @@ export const initialState: { profile: Profile } = {
     roles: [],
     booklist: {},
   },
- 
 };
 
 export const profileReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case "SET_PROFILE":
-      return action.payload;
-    case UPDATE_PROFILE_FIELD:
-      return {
-        profile: {
-          ...state.profile,
-          [action.fieldName]: action.value,
-        },
-      };
+      return { ...state, profile: action.payload };
+
     default:
       return state;
   }
