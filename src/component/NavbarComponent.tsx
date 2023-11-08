@@ -1,5 +1,5 @@
 import { Button, Container, Modal, Nav, NavDropdown, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { AiOutlineUser } from "react-icons/ai";
 import { useState } from "react";
@@ -12,7 +12,13 @@ import { initialState } from "../redux/reducers/profile";
 
 const NavbarComponent = () => {
   const currentProfile: Profile = useSelector((state: RootState) => state.profile);
-  console.log(currentProfile);
+  const isLogged: boolean = currentProfile.id != null;
+  let isUser: boolean = false;
+  let isLibrary: boolean = false;
+  if (isLogged) {
+    isUser = currentProfile.roles[0].roleName === "ROLE_USER";
+    isLibrary = currentProfile.roles[0].roleName === "ROLE_MODERATOR";
+  }
   return (
     <Navbar expand="lg" data-bs-theme="dark" className="bg-danger">
       <Container fluid>
@@ -78,7 +84,7 @@ const NavbarComponent = () => {
               <span className="text-light">
                 {currentProfile.id ? currentProfile.name || currentProfile.fullname : <AiOutlineUser />}
                 <ul className="ps-0 text-decoration-none">
-                  {!currentProfile.id ? (
+                  {isLogged ? (
                     <>
                       <RegisterModal />
                       <LoginModal />
@@ -344,8 +350,10 @@ function LoginModal() {
 
 function LogoutButton() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");
+    navigate("/");
     dispatch(setProfile(initialState.profile));
   };
   return (

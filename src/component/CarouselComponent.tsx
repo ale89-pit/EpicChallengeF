@@ -66,7 +66,7 @@ function CarouselComponent(props: CarouselProps) {
 interface bookProps {
   book: Book;
 }
-function CarouselCardComponent(props: bookProps) {
+export function CarouselCardComponent(props: bookProps) {
   const [cover, setCover] = useState<string>("");
   const getCover = async () => {
     try {
