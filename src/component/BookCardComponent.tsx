@@ -32,7 +32,7 @@ function BookCardComponent(props: bookProps) {
     <Row className="my-4">
       <Col xs={12} sm={4} className="text-center">
         <img
-          className="w-75"
+          className="w-75 book-cover"
           src={cover}
           alt={"book" + props.book.isbn}
           onError={(event) =>
