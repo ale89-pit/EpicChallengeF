@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import HomePageComponent from "./component/HomepageComponent";
 import BookDetailsPage from "./component/BookDetailsPage";
 import UserorLibraryDetails from "./component/UserOrLibraryDetails";
+import BooksPage from "./component/BooksPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePageComponent />}></Route>
           <Route path="/profile" element={<UserorLibraryDetails />} />
+          <Route path="/books" element={<BooksPage />} />
           <Route path="/details/:isbn" element={<BookDetailsPage />} />
         </Routes>
       </div>
