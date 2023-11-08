@@ -1,5 +1,12 @@
-import { Button, Container, Modal, Nav, NavDropdown, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {
+  Button,
+  Container,
+  Modal,
+  Nav,
+  NavDropdown,
+  Navbar,
+} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { AiOutlineUser } from "react-icons/ai";
 import { useState } from "react";
@@ -11,7 +18,9 @@ import { RootState } from "../redux/store";
 import { initialState } from "../redux/reducers/profile";
 
 const NavbarComponent = () => {
-  const currentProfile: Profile = useSelector((state: RootState) => state.profile);
+  const currentProfile: Profile = useSelector(
+    (state: RootState) => state.profile
+  );
   console.log(currentProfile);
   return (
     <Navbar expand="lg" data-bs-theme="dark" className="bg-danger">
@@ -37,7 +46,9 @@ const NavbarComponent = () => {
                 <NavDropdown
                   title={
                     <>
-                      {currentProfile.id ? currentProfile.name || currentProfile.fullname : "Profile"}
+                      {currentProfile.id
+                        ? currentProfile.name || currentProfile.fullname
+                        : "Profile"}
                       <AiOutlineUser className="ms-1" />
                     </>
                   }
@@ -52,7 +63,10 @@ const NavbarComponent = () => {
                     ) : (
                       <>
                         <LogoutButton />
-                        <Link to="/profile" className="text-decoration-none nav-link list-unstyled">
+                        <Link
+                          to="/profile"
+                          className="text-decoration-none nav-link list-unstyled"
+                        >
                           Profile
                         </Link>
                       </>
@@ -76,7 +90,11 @@ const NavbarComponent = () => {
                 </Link>
               </span>
               <span className="text-light">
-                {currentProfile.id ? currentProfile.name || currentProfile.fullname : <AiOutlineUser />}
+                {currentProfile.id ? (
+                  currentProfile.name || currentProfile.fullname
+                ) : (
+                  <AiOutlineUser />
+                )}
                 <ul className="ps-0 text-decoration-none">
                   {!currentProfile.id ? (
                     <>
@@ -86,7 +104,10 @@ const NavbarComponent = () => {
                   ) : (
                     <>
                       <LogoutButton />
-                      <Link to="/profile" className="text-decoration-none nav-link list-unstyled">
+                      <Link
+                        to="/profile"
+                        className="text-decoration-none nav-link list-unstyled"
+                      >
                         Profile
                       </Link>
                     </>
@@ -154,10 +175,18 @@ function RegisterModal() {
           <Modal.Title>Register</Modal.Title>
         </Modal.Header>
         <span className="d-flex">
-          <Button className="w-25 ms-1" variant="tertiary" onClick={() => setTab("user")}>
+          <Button
+            className="w-25 ms-1"
+            variant="tertiary"
+            onClick={() => setTab("user")}
+          >
             User
           </Button>
-          <Button className="w-25 ms-1" variant="tertiary" onClick={() => setTab("library")}>
+          <Button
+            className="w-25 ms-1"
+            variant="tertiary"
+            onClick={() => setTab("library")}
+          >
             Library
           </Button>
         </span>
@@ -167,7 +196,11 @@ function RegisterModal() {
             <Modal.Body>
               <Form.Group className="mb-3" controlId="userFullName">
                 <Form.Label>Full name</Form.Label>
-                <Form.Control type="text" onChange={(e) => setUserName(e.target.value)} placeholder="Mario Rossi" />
+                <Form.Control
+                  type="text"
+                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Mario Rossi"
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="userEmail">
                 <Form.Label>Email address</Form.Label>
@@ -179,7 +212,11 @@ function RegisterModal() {
               </Form.Group>
               <Form.Group className="mb-3" controlId="username">
                 <Form.Label>username</Form.Label>
-                <Form.Control type="text" onChange={(e) => setUsername(e.target.value)} placeholder="mario.rossi" />
+                <Form.Control
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="mario.rossi"
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="userPassword">
                 <Form.Label>Password</Form.Label>
@@ -313,11 +350,19 @@ function LoginModal() {
         <Modal.Body>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>username</Form.Label>
-            <Form.Control type="text" onChange={(e) => setUsername(e.target.value)} placeholder="mario.rossi" />
+            <Form.Control
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="mario.rossi"
+            />
           </Form.Group>
           <Form.Group className="mb-3" controlId="password">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" onChange={(e) => setPassword(e.target.value)} placeholder="···············" />
+            <Form.Control
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="···············"
+            />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
@@ -344,9 +389,12 @@ function LoginModal() {
 
 function LogoutButton() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const logout = () => {
     localStorage.removeItem("token");
     dispatch(setProfile(initialState.profile));
+    navigate("/");
   };
   return (
     <li className="nav-link list-unstyled" onClick={logout}>
