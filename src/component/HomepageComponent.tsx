@@ -9,11 +9,11 @@ function HomePageComponent() {
 
   const getBooks = async () => {
     try {
-      let response = await fetch(`http://localhost:8080/book/allT`, {});
+      let response = await fetch(`http://localhost:8080/book/all`, {});
       if (response.ok) {
         let data = await response.json();
         console.log(data);
-        setAllBooks(data);
+        setAllBooks(data.content);
         setIsLoading(false);
       } else {
         console.log("Errore nella ricezione dei dati");

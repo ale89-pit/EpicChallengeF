@@ -1,11 +1,7 @@
 import { Col, Row } from "react-bootstrap";
-
-import { Book } from "../interfaces/Book";
 import { useEffect, useState } from "react";
+import { bookProps } from "../interfaces/PropsIntefaces";
 
-interface bookProps {
-  book: Book;
-}
 function BookCardComponent(props: bookProps) {
   const [cover, setCover] = useState<string>("");
   const getCover = async () => {
@@ -29,8 +25,8 @@ function BookCardComponent(props: bookProps) {
     getCover();
   }, []);
   return (
-    <Row className="my-4">
-      <Col xs={12} sm={4} className="text-center">
+    <Row>
+      <Col xs={12} sm={4} className="ms-2">
         <img
           className="w-75 book-cover"
           src={cover}
@@ -41,8 +37,8 @@ function BookCardComponent(props: bookProps) {
           }
         />
       </Col>
-      <Col xs={8} sm={6}>
-        <h3 className="mt-2 mb-4">{props.book.title}</h3>
+      <Col xs={8} sm={6} className="ms-2">
+        <h3 className="mt-5 mb-3">{props.book.title}</h3>
         <span className="fw-bold">ISBN: </span>
         {props.book.isbn}
         <br />

@@ -21,7 +21,13 @@ const NavbarComponent = () => {
   const currentProfile: Profile = useSelector(
     (state: RootState) => state.profile
   );
-  console.log(currentProfile);
+  const isLogged: boolean = currentProfile.id != null;
+  let isUser: boolean = false;
+  let isLibrary: boolean = false;
+  if (isLogged) {
+    isUser = currentProfile.roles[0].roleName === "ROLE_USER";
+    isLibrary = currentProfile.roles[0].roleName === "ROLE_MODERATOR";
+  }
   return (
     <Navbar expand="lg" data-bs-theme="dark" className="bg-danger">
       <Container fluid>
@@ -35,12 +41,25 @@ const NavbarComponent = () => {
                 <Link to="/" className="text-decoration-none">
                   <div className="nav-link me-2">Home</div>
                 </Link>
-                <Link to="/libraries" className="text-decoration-none">
-                  <div className="nav-link me-2">Libraries</div>
-                </Link>
-                <Link to="/books" className="text-decoration-none">
-                  <div className="nav-link me-2">Books</div>
-                </Link>
+                {!isLibrary ? (
+                  <>
+                    <Link to="/libraries" className="text-decoration-none">
+                      <div className="nav-link me-2">Libraries</div>
+                    </Link>
+                    <Link to="/books" className="text-decoration-none">
+                      <div className="nav-link me-2">Books</div>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/bookings" className="text-decoration-none">
+                      <div className="nav-link me-2">Bookings</div>
+                    </Link>
+                    <Link to="/cards" className="text-decoration-none">
+                      <div className="nav-link me-2"> Memberhip Cards</div>
+                    </Link>
+                  </>
+                )}
               </span>
               <span className="me-5 pe-4">
                 <NavDropdown
@@ -96,7 +115,7 @@ const NavbarComponent = () => {
                   <AiOutlineUser />
                 )}
                 <ul className="ps-0 text-decoration-none">
-                  {!currentProfile.id ? (
+                  {isLogged ? (
                     <>
                       <RegisterModal />
                       <LoginModal />
@@ -390,11 +409,10 @@ function LoginModal() {
 function LogoutButton() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const logout = () => {
     localStorage.removeItem("token");
-    dispatch(setProfile(initialState.profile));
     navigate("/");
+    dispatch(setProfile(initialState.profile));
   };
   return (
     <li className="nav-link list-unstyled" onClick={logout}>

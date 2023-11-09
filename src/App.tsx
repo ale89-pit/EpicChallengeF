@@ -8,6 +8,8 @@ import HomePageComponent from "./component/HomepageComponent";
 import BookDetailsPage from "./component/BookDetailsPage";
 import UserorLibraryDetails from "./component/UserOrLibraryDetails";
 import BooksPage from "./component/BooksPage";
+import LibraryPageComponent from "./component/LibraryPageComponent";
+import BookingsPage from "./component/BookingsPage";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/profile" element={<UserorLibraryDetails />} />
           <Route path="/books" element={<BooksPage />} />
           <Route path="/details/:isbn" element={<BookDetailsPage />} />
+          <Route path="/library/:id" element={<LibraryPageComponent />} />
+          <Route path="/bookings" element={<BookingsPage />} />
         </Routes>
       </div>
     </BrowserRouter>

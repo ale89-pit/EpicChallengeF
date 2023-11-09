@@ -66,17 +66,15 @@ function CarouselComponent(props: CarouselProps) {
 interface bookProps {
   book: Book;
 }
-function CarouselCardComponent(props: bookProps) {
+export function CarouselCardComponent(props: bookProps) {
   const [cover, setCover] = useState<string>("");
   const getCover = async () => {
     try {
       let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${props.book.isbn}`, {});
       if (response.ok) {
         let data = await response.json();
-        console.log(data);
+        //console.log(data);
         setCover(data.items[0].volumeInfo.imageLinks.thumbnail);
-      } else {
-        console.log("Errore nella ricezione dei dati");
       }
     } catch (error) {
       console.log("ERRORE: " + error);
