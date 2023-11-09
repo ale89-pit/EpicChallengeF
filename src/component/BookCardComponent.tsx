@@ -25,7 +25,7 @@ function BookCardComponent(props: bookProps) {
     getCover();
   }, []);
   return (
-    <Row>
+    <Row className="my-3">
       <Col xs={12} sm={4} className="ms-2">
         <img
           className="w-75 book-cover"

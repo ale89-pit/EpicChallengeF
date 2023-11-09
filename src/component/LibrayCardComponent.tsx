@@ -62,11 +62,13 @@ export default function LibraryCardComponent({
     <Card className="w-100">
       <Card.Body>
         <Card.Title>{library.name}</Card.Title>
-        {library.address != null && (
+        {
           <span className="d-flex justify-content-between">
             <span>
-              {library.address.street}, {library.address.number} - {library.address.municipality.name}
+              {library.address != null &&
+                `${library.address.street}, ${library.address.number} -${library.address.municipality.name}`}
             </span>
+
             <span>
               <Button
                 variant="danger"
@@ -81,11 +83,18 @@ export default function LibraryCardComponent({
               {/* mostra i buttons prenota o richiedi tessera se il profilo ha ruolo utente */}
               {isUser &&
                 cards.map((card, index) => {
-                  if (card.library.id === library.id && card.user.id === currentProfile.id) {
+                  if (
+                    card.library.id === library.id &&
+                    card.user.id === currentProfile.id
+                  ) {
                     return (
                       <>
                         <Button
-                          disabled={card.state === "WAITING_FOR_APPROVAL" || card.state === "REJECTED" || isBooked}
+                          disabled={
+                            card.state === "WAITING_FOR_APPROVAL" ||
+                            card.state === "REJECTED" ||
+                            isBooked
+                          }
                           variant="danger"
                           className="ms-2"
                           key={index + card.library.id!}
@@ -131,7 +140,7 @@ export default function LibraryCardComponent({
               )}
             </span>
           </span>
-        )}
+        }
       </Card.Body>
     </Card>
   );
