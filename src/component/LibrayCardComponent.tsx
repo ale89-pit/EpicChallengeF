@@ -1,7 +1,8 @@
-import { Button, Card } from "react-bootstrap";
+import { Alert, Button, Card } from "react-bootstrap";
 import { libraryProps } from "../interfaces/PropsIntefaces";
 import { NewBookingDto } from "../interfaces/BookingDto";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function LibraryCardComponent({
   library,
@@ -12,6 +13,7 @@ export default function LibraryCardComponent({
   index,
   isUser,
 }: libraryProps) {
+  const [isBooked, setIsBooked] = useState(false);
   const navigate = useNavigate();
   const newCard = async (username: string, libraryId: number) => {
     try {
@@ -47,6 +49,8 @@ export default function LibraryCardComponent({
       if (response.ok) {
         let data = await response.json();
         console.log(data);
+        alert("Prenotazione creata con successo");
+        setIsBooked(true);
       } else {
         alert("Errore nella creazione della prenotazione");
       }
@@ -81,7 +85,7 @@ export default function LibraryCardComponent({
                     return (
                       <>
                         <Button
-                          disabled={card.state === "WAITING_FOR_APPROVAL" || card.state === "REJECTED"}
+                          disabled={card.state === "WAITING_FOR_APPROVAL" || card.state === "REJECTED" || isBooked}
                           variant="danger"
                           className="ms-2"
                           key={index + card.library.id!}
