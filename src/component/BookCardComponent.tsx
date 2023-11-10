@@ -12,7 +12,7 @@ function BookCardComponent(props: bookProps) {
       );
       if (response.ok) {
         let data = await response.json();
-        console.log(data);
+        // console.log(data);
         setCover(data.items[0].volumeInfo.imageLinks.thumbnail);
       } else {
         console.log("Errore nella ricezione dei dati");

@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Card, Container, Row } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Card,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
 import { Book } from "../interfaces/Book";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +41,7 @@ function BooksPage() {
   const fileReader = new FileReader();
 
   const bookSelected = (isbn: string) => {
-    navigate("/details/" + isbn);
+    if (!isLibrary) navigate("/details/" + isbn);
   };
 
   const handleOnChange = (e: any) => {
@@ -53,10 +61,34 @@ function BooksPage() {
   };
 
   const fetchBooks = async () => {
-    const data = await getAllBooks();
-    if (data.errMessage) setErrMessage(data.errMessage);
-    setBooks(data.books);
+    //TODO: chiama fetch diverse per library / user
+    if (!isLogged) {
+      const data = await getAllBooks();
+      setBooks(data.books);
+      if (data.errMessage) {
+        setErrMessage(data.errMessage);
+        setBooks(data.books);
+      }
+    } else {
+      if (isLibrary) {
+        const data = await getAllBooks();
+        setBooks(data.books);
+        if (data.errMessage) {
+          setErrMessage(data.errMessage);
+          setBooks(data.books);
+        }
+      } else if (isUser) {
+        const data = await getAllBooks();
+        setBooks(data.books);
+        if (data.errMessage) {
+          setErrMessage(data.errMessage);
+          setBooks(data.books);
+        }
+      }
+    }
   };
+
+  function setErrorMessageIfPresent(data: any) {}
   // const fetchBooksByLibraryId = async (libId) => {
   //   const data = await getAllBooks();
   //   if (data.errMessage) setErrMessage(data.errMessage);
@@ -70,12 +102,13 @@ function BooksPage() {
   return (
     <Container className="mt-5">
       {isLibrary && (
-        <form encType="multipart/form-data">
+        <Form encType="multipart/form-data">
           <input type="file" accept=".csv" onChange={handleOnChange} />
+
           <Button variant="success" onClick={handleOnSubmit}>
             IMPORT BOOKS FROM CSV
           </Button>
-        </form>
+        </Form>
       )}
 
       {responseMessage ? (
