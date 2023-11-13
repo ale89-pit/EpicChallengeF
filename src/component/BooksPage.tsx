@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Alert,
+  Badge,
   Button,
   Card,
   Container,
@@ -14,7 +15,13 @@ import { useNavigate } from "react-router-dom";
 import { Profile } from "../redux/reducers/profile";
 import { RootState } from "../redux/store";
 import BookCardComponent from "./BookCardComponent";
-import { addBooksFromFile, getAllBooks } from "../fetches/books";
+import {
+  addBooksFromFile,
+  getAllBooks,
+  getAllBooksByLibraryId,
+} from "../fetches/books";
+import { Library } from "../interfaces/Library";
+import { LibrarybookList } from "../interfaces/LibraryBookList";
 
 function BooksPage() {
   // TODO: se utente è libreria mostra solo i libri della stessa
@@ -33,12 +40,13 @@ function BooksPage() {
   }
 
   const [books, setBooks] = useState<Book[]>([]);
+  const [libraryBooks, setLibraryBooks] = useState<LibrarybookList[]>([]);
+
   const [errMessage, setErrMessage] = useState<string>("");
   const [responseMessage, setResponseMessage] = useState<string>("");
 
   const navigate = useNavigate();
   const [file, setFile] = useState<File>();
-  const fileReader = new FileReader();
 
   const bookSelected = (isbn: string) => {
     if (!isLibrary) navigate("/details/" + isbn);
@@ -62,29 +70,25 @@ function BooksPage() {
 
   const fetchBooks = async () => {
     //TODO: chiama fetch diverse per library / user
+    let data = null;
     if (!isLogged) {
-      const data = await getAllBooks();
-      setBooks(data.books);
+      data = await getAllBooks();
       if (data.errMessage) {
         setErrMessage(data.errMessage);
-        setBooks(data.books);
-      }
+      } else setBooks(data.books);
     } else {
       if (isLibrary) {
-        const data = await getAllBooks();
-        setBooks(data.books);
+        data = await getAllBooksByLibraryId(
+          currentProfile.id ? currentProfile.id : 0
+        );
+        console.log(data.books);
+        setLibraryBooks(data.books);
         if (data.errMessage) {
           setErrMessage(data.errMessage);
-          setBooks(data.books);
-        }
+        } else setBooks(data.books);
       } else if (isUser) {
         const data = await getAllBooks();
-        setBooks(data.books);
-        if (data.errMessage) {
-          setErrMessage(data.errMessage);
-          setBooks(data.books);
-        }
-      }
+      } else setErrMessage("Error in get books");
     }
   };
 
@@ -97,7 +101,7 @@ function BooksPage() {
 
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, [isLogged]);
 
   return (
     <Container className="mt-5">
@@ -119,6 +123,19 @@ function BooksPage() {
 
       {errMessage ? (
         <Alert variant="danger">{errMessage}</Alert>
+      ) : isLibrary ? (
+        libraryBooks.map((book) => {
+          return (
+            <Card
+              className="w-100"
+              onClick={() => bookSelected(book.book.isbn)}
+              key={book.book.isbn}
+            >
+              <BookCardComponent book={book.book} />
+              <Badge>Quantity Available: {book.quantity}</Badge>
+            </Card>
+          );
+        })
       ) : (
         books.map((book) => {
           return (

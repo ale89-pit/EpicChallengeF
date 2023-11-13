@@ -26,6 +26,7 @@ export const getAllBooksByLibraryId = async (library_id: number) => {
     if (response.ok) {
       let data = await response.json();
       console.log(data);
+      //riceve una lista dove ogni elemento è la coppia <Book, quantity>
       return { books: data };
     } else {
       return {
@@ -44,6 +45,7 @@ export const getBookByIsbn = async (isbn: string) => {
     if (response.ok) {
       let data = await response.json();
       console.log(data);
+
       return { book: data };
     } else {
       return {

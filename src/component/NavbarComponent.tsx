@@ -41,16 +41,16 @@ const NavbarComponent = () => {
                 <Link to="/" className="text-decoration-none">
                   <div className="nav-link me-2">Home</div>
                 </Link>
-                {!isLibrary ? (
-                  <>
-                    <Link to="/libraries" className="text-decoration-none">
-                      <div className="nav-link me-2">Libraries</div>
-                    </Link>
-                    <Link to="/books" className="text-decoration-none">
-                      <div className="nav-link me-2">Books</div>
-                    </Link>
-                  </>
-                ) : (
+
+                <Link to="/libraries" className="text-decoration-none">
+                  <div className="nav-link me-2">Libraries</div>
+                </Link>
+
+                <Link to="/books" className="text-decoration-none">
+                  <div className="nav-link me-2">Books</div>
+                </Link>
+
+                {isLogged ? (
                   <>
                     <Link to="/bookings" className="text-decoration-none">
                       <div className="nav-link me-2">Bookings</div>
@@ -59,6 +59,8 @@ const NavbarComponent = () => {
                       <div className="nav-link me-2"> Memberhip Cards</div>
                     </Link>
                   </>
+                ) : (
+                  <></>
                 )}
               </span>
               <span className="me-5 pe-4">
