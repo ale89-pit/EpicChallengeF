@@ -9,7 +9,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { AiOutlineUser } from "react-icons/ai";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { getProfile, setProfile } from "../redux/actions";
 import { useAppDispatch } from "../redux/app/hooks";
 import { Profile } from "../redux/reducers/profile";
@@ -18,10 +18,21 @@ import { RootState } from "../redux/store";
 import { initialState } from "../redux/reducers/profile";
 
 const NavbarComponent = () => {
-  const currentProfile: Profile = useSelector(
-    (state: RootState) => state.profile
-  );
-  console.log(currentProfile);
+  const currentProfile: Profile = useSelector((state: RootState) => state.profile);
+  const isLogged: boolean = currentProfile.id != null ? false : true;
+  let isUser: boolean = false;
+  let isLibrary: boolean = false;
+  if (isLogged) {
+    isUser = currentProfile?.roles[0]?.roleName === "ROLE_USER";
+    isLibrary = currentProfile?.roles[0]?.roleName === "ROLE_MODERATOR";
+  }
+  useEffect(()=>{
+
+  },[])
+
+  useEffect(()=>{
+
+  },[isLogged])
   return (
     <Navbar expand="lg" data-bs-theme="dark" className="bg-danger">
       <Container fluid>
