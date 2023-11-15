@@ -1,8 +1,15 @@
-import { Button, Container, Modal, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Modal,
+  Nav,
+  NavDropdown,
+  Navbar,
+} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { AiOutlineUser } from "react-icons/ai";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { getProfile, setProfile } from "../redux/actions";
 import { useAppDispatch } from "../redux/app/hooks";
 import { Profile } from "../redux/reducers/profile";
@@ -11,13 +18,15 @@ import { RootState } from "../redux/store";
 import { initialState } from "../redux/reducers/profile";
 
 const NavbarComponent = () => {
-  const currentProfile: Profile = useSelector((state: RootState) => state.profile);
+  const currentProfile: Profile = useSelector(
+    (state: RootState) => state.profile
+  );
   const isLogged: boolean = currentProfile.id != null;
   let isUser: boolean = false;
   let isLibrary: boolean = false;
   if (isLogged) {
-    isUser = currentProfile.roles[0].roleName === "ROLE_USER";
-    isLibrary = currentProfile.roles[0].roleName === "ROLE_MODERATOR";
+    isUser = currentProfile?.roles[0]?.roleName === "ROLE_USER";
+    isLibrary = currentProfile?.roles[0]?.roleName === "ROLE_MODERATOR";
   }
   return (
     <Navbar expand="lg" data-bs-theme="dark" className="bg-danger">
@@ -32,16 +41,16 @@ const NavbarComponent = () => {
                 <Link to="/" className="text-decoration-none">
                   <div className="nav-link me-2">Home</div>
                 </Link>
-                {!isLibrary ? (
-                  <>
-                    <Link to="/libraries" className="text-decoration-none">
-                      <div className="nav-link me-2">Libraries</div>
-                    </Link>
-                    <Link to="/books" className="text-decoration-none">
-                      <div className="nav-link me-2">Books</div>
-                    </Link>
-                  </>
-                ) : (
+
+                <Link to="/libraries" className="text-decoration-none">
+                  <div className="nav-link me-2">Libraries</div>
+                </Link>
+
+                <Link to="/books" className="text-decoration-none">
+                  <div className="nav-link me-2">Books</div>
+                </Link>
+
+                {isLogged ? (
                   <>
                     <Link to="/bookings" className="text-decoration-none">
                       <div className="nav-link me-2">Bookings</div>
@@ -50,13 +59,17 @@ const NavbarComponent = () => {
                       <div className="nav-link me-2"> Memberhip Cards</div>
                     </Link>
                   </>
+                ) : (
+                  <></>
                 )}
               </span>
               <span className="me-5 pe-4">
                 <NavDropdown
                   title={
                     <>
-                      {currentProfile.id ? currentProfile.name || currentProfile.fullname : "Profile"}
+                      {currentProfile.id
+                        ? currentProfile.name || currentProfile.fullname
+                        : "Profile"}
                       <AiOutlineUser className="ms-1" />
                     </>
                   }
@@ -71,7 +84,10 @@ const NavbarComponent = () => {
                     ) : (
                       <>
                         <LogoutButton />
-                        <Link to="/profile" className="text-decoration-none nav-link list-unstyled">
+                        <Link
+                          to="/profile"
+                          className="text-decoration-none nav-link list-unstyled"
+                        >
                           Profile
                         </Link>
                       </>
@@ -95,7 +111,11 @@ const NavbarComponent = () => {
                 </Link>
               </span>
               <span className="text-light">
-                {currentProfile.id ? currentProfile.name || currentProfile.fullname : <AiOutlineUser />}
+                {currentProfile.id ? (
+                  currentProfile.name || currentProfile.fullname
+                ) : (
+                  <AiOutlineUser />
+                )}
                 <ul className="ps-0 text-decoration-none">
                   {isLogged ? (
                     <>
@@ -105,7 +125,10 @@ const NavbarComponent = () => {
                   ) : (
                     <>
                       <LogoutButton />
-                      <Link to="/profile" className="text-decoration-none nav-link list-unstyled">
+                      <Link
+                        to="/profile"
+                        className="text-decoration-none nav-link list-unstyled"
+                      >
                         Profile
                       </Link>
                     </>
@@ -173,10 +196,18 @@ function RegisterModal() {
           <Modal.Title>Register</Modal.Title>
         </Modal.Header>
         <span className="d-flex">
-          <Button className="w-25 ms-1" variant="tertiary" onClick={() => setTab("user")}>
+          <Button
+            className="w-25 ms-1"
+            variant="tertiary"
+            onClick={() => setTab("user")}
+          >
             User
           </Button>
-          <Button className="w-25 ms-1" variant="tertiary" onClick={() => setTab("library")}>
+          <Button
+            className="w-25 ms-1"
+            variant="tertiary"
+            onClick={() => setTab("library")}
+          >
             Library
           </Button>
         </span>
@@ -186,7 +217,11 @@ function RegisterModal() {
             <Modal.Body>
               <Form.Group className="mb-3" controlId="userFullName">
                 <Form.Label>Full name</Form.Label>
-                <Form.Control type="text" onChange={(e) => setUserName(e.target.value)} placeholder="Mario Rossi" />
+                <Form.Control
+                  type="text"
+                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Mario Rossi"
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="userEmail">
                 <Form.Label>Email address</Form.Label>
@@ -198,7 +233,11 @@ function RegisterModal() {
               </Form.Group>
               <Form.Group className="mb-3" controlId="username">
                 <Form.Label>username</Form.Label>
-                <Form.Control type="text" onChange={(e) => setUsername(e.target.value)} placeholder="mario.rossi" />
+                <Form.Control
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="mario.rossi"
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="userPassword">
                 <Form.Label>Password</Form.Label>
@@ -332,11 +371,19 @@ function LoginModal() {
         <Modal.Body>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>username</Form.Label>
-            <Form.Control type="text" onChange={(e) => setUsername(e.target.value)} placeholder="mario.rossi" />
+            <Form.Control
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="mario.rossi"
+            />
           </Form.Group>
           <Form.Group className="mb-3" controlId="password">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" onChange={(e) => setPassword(e.target.value)} placeholder="···············" />
+            <Form.Control
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="···············"
+            />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>

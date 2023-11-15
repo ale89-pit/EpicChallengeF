@@ -1,5 +1,7 @@
-@use "./custom.scss";
+@use "./_custom.scss";
 
-@use "./components/bookCardComponents";
+@use "./components/_bookCardComponents";
 
-@use "./components/carouselComponent";
+@use "./components/_carouselComponent";
+
+@use "./components/_homeComponent";

@@ -1,0 +1,12 @@
+.card {
+  width: 200px !important;
+  margin: 3em !important;
+  padding: 1rem !important;
+  border-radius: 1rem;
+}
+.book-cover {
+  transition: all 300ms;
+  &:hover {
+    transform: scale(1.05);
+  }
+}

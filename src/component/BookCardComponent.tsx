@@ -6,10 +6,13 @@ function BookCardComponent(props: bookProps) {
   const [cover, setCover] = useState<string>("");
   const getCover = async () => {
     try {
-      let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${props.book.isbn}`, {});
+      let response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=isbn:${props.book.isbn}`,
+        {}
+      );
       if (response.ok) {
         let data = await response.json();
-        console.log(data);
+        // console.log(data);
         setCover(data.items[0].volumeInfo.imageLinks.thumbnail);
       } else {
         console.log("Errore nella ricezione dei dati");
@@ -22,10 +25,10 @@ function BookCardComponent(props: bookProps) {
     getCover();
   }, []);
   return (
-    <Row>
+    <Row className="my-3">
       <Col xs={12} sm={4} className="ms-2">
         <img
-          className="w-75"
+          className="w-75 book-cover"
           src={cover}
           alt={"book" + props.book.isbn}
           onError={(event) =>

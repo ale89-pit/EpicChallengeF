@@ -12,7 +12,9 @@ import { userDto } from "../interfaces/UserDto";
 import { LibraryDto } from "../interfaces/LibraryDto";
 
 const UserorLibraryDetails = () => {
-  const currentProfile: Profile = useSelector((state: RootState) => state.profile);
+  const currentProfile: Profile = useSelector(
+    (state: RootState) => state.profile
+  );
   const [userDto, setUserDto] = useState<userDto>({
     fullname: currentProfile.fullname ? currentProfile.fullname : "",
     name: currentProfile.name ? currentProfile.name : "",
@@ -20,9 +22,14 @@ const UserorLibraryDetails = () => {
     email: currentProfile.email ? currentProfile.email : "",
     phone: currentProfile.phone ? currentProfile.phone : "",
     addressDto: {
-      street: currentProfile.address != null ? currentProfile.address.street : "",
-      streetNumber: currentProfile.address != null ? currentProfile.address.number : "",
-      municipalityId: currentProfile.address != null ? currentProfile.address.municipality.id : "",
+      street:
+        currentProfile.address != null ? currentProfile.address.street : "",
+      streetNumber:
+        currentProfile.address != null ? currentProfile.address.number : "",
+      municipalityId:
+        currentProfile.address != null
+          ? currentProfile.address.municipality.id
+          : "",
     },
   });
 
@@ -35,7 +42,7 @@ const UserorLibraryDetails = () => {
   const [validated, setValidated] = useState<boolean>(false);
 
   const uriModify =
-    currentProfile?.roles[0].roleName === "ROLE_USER"
+    currentProfile.roles[0]?.roleName === "ROLE_USER"
       ? "http://localhost:8080/user/"
       : "http://localhost:8080/library/";
 
@@ -55,7 +62,10 @@ const UserorLibraryDetails = () => {
       body: JSON.stringify(userDto),
     };
     try {
-      let response = await fetch(uriModify + currentProfile.id, requestOptionsPut);
+      let response = await fetch(
+        uriModify + currentProfile.id,
+        requestOptionsPut
+      );
       if (response.ok) {
         alert("Modifica effettuata con successo");
       }
@@ -91,7 +101,10 @@ const UserorLibraryDetails = () => {
   };
   const getProvince = async () => {
     try {
-      let response = await fetch("http://localhost:8080/province/all", requestOptions);
+      let response = await fetch(
+        "http://localhost:8080/province/all",
+        requestOptions
+      );
       if (response.ok) {
         let data = await response.json();
         console.log(data);
@@ -106,16 +119,25 @@ const UserorLibraryDetails = () => {
 
   const filterProvince = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRegion = event.target.value;
-    const filteredProvinces: Province[] = province.filter((element: Province) => element.region === selectedRegion);
-    const provinceNames: string[] = filteredProvinces.map((element: Province) => element.name);
+    const filteredProvinces: Province[] = province.filter(
+      (element: Province) => element.region === selectedRegion
+    );
+    const provinceNames: string[] = filteredProvinces.map(
+      (element: Province) => element.name
+    );
     setProvinceFilter(provinceNames);
   };
 
-  const getMunicipality = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const getMunicipality = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const selectedProvince = event.target.value;
     console.log(selectedProvince);
     try {
-      let response = await fetch(`http://localhost:8080/municipality/${selectedProvince}`, requestOptions);
+      let response = await fetch(
+        `http://localhost:8080/municipality/${selectedProvince}`,
+        requestOptions
+      );
       if (response.ok) {
         let data = await response.json();
         console.log(data);
@@ -126,11 +148,11 @@ const UserorLibraryDetails = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
-    dispatch(updateProfileField(name, value));
   };
 
   useEffect(() => {
     getProvince();
+    console.log(userDto);
   }, []);
   useEffect(() => {
     createRegion();
@@ -149,7 +171,9 @@ const UserorLibraryDetails = () => {
                 placeholder="First name"
                 defaultValue={currentProfile.fullname}
                 //   value={userDto.fullname}
-                onChange={(e) => setUserDto({ ...userDto, fullname: e.currentTarget.value })}
+                onChange={(e) =>
+                  setUserDto({ ...userDto, fullname: e.currentTarget.value })
+                }
                 name="fullname"
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -157,28 +181,42 @@ const UserorLibraryDetails = () => {
           )}
 
           {currentProfile.username && (
-            <Form.Group as={Col} md="4" controlId="validationUsername" onChange={handleInputChange}>
+            <Form.Group
+              as={Col}
+              md="4"
+              controlId="validationUsername"
+              onChange={handleInputChange}
+            >
               <Form.Label>Username</Form.Label>
               <Form.Control
                 required
                 type="text"
                 placeholder="Username"
                 defaultValue={currentProfile.username}
-                onChange={(e) => setUserDto({ ...userDto, username: e.currentTarget.value })}
+                onChange={(e) =>
+                  setUserDto({ ...userDto, username: e.currentTarget.value })
+                }
                 name="username"
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
           )}
           {currentProfile.name && (
-            <Form.Group as={Col} md="4" controlId="validationUsername" onChange={handleInputChange}>
+            <Form.Group
+              as={Col}
+              md="4"
+              controlId="validationUsername"
+              onChange={handleInputChange}
+            >
               <Form.Label>Name Library</Form.Label>
               <Form.Control
                 required
                 type="text"
                 placeholder="Username"
                 defaultValue={currentProfile.name}
-                onChange={(e) => setUserDto({ ...userDto, name: e.currentTarget.value })}
+                onChange={(e) =>
+                  setUserDto({ ...userDto, name: e.currentTarget.value })
+                }
                 name="username"
               />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -193,7 +231,9 @@ const UserorLibraryDetails = () => {
                 placeholder="Username"
                 aria-describedby="inputGroupPrepend"
                 defaultValue={currentProfile.email}
-                onChange={(e) => setUserDto({ ...userDto, email: e.currentTarget.value })}
+                onChange={(e) =>
+                  setUserDto({ ...userDto, email: e.currentTarget.value })
+                }
                 name="email"
               />
             </InputGroup>
@@ -208,7 +248,9 @@ const UserorLibraryDetails = () => {
                 required
                 aria-describedby="inputGroupPrepend"
                 defaultValue={currentProfile.phone}
-                onChange={(e) => setUserDto({ ...userDto, phone: e.currentTarget.value })}
+                onChange={(e) =>
+                  setUserDto({ ...userDto, phone: e.currentTarget.value })
+                }
                 name="phone"
               />
             </InputGroup>
@@ -217,9 +259,14 @@ const UserorLibraryDetails = () => {
         <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="validationRegione">
             <Form.Label>Regione</Form.Label>
-            <Form.Select aria-label="Default select example" onChange={filterProvince}>
+            <Form.Select
+              aria-label="Default select example"
+              onChange={filterProvince}
+            >
               <option>
-                {currentProfile.address != null ? currentProfile.address.municipality.province.region : ""}
+                {currentProfile.address != null
+                  ? currentProfile.address.municipality.province.region
+                  : ""}
               </option>
               {region.map((element, index) => {
                 return (
@@ -232,8 +279,15 @@ const UserorLibraryDetails = () => {
           </Form.Group>
           <Form.Group as={Col} md="6" controlId="validationProvincia">
             <Form.Label>Provincia</Form.Label>
-            <Form.Select aria-label="Default select example" onChange={getMunicipality}>
-              <option>{currentProfile.address != null ? currentProfile.address.municipality.province.name : ""}</option>
+            <Form.Select
+              aria-label="Default select example"
+              onChange={getMunicipality}
+            >
+              <option>
+                {currentProfile.address != null
+                  ? currentProfile.address.municipality.province.name
+                  : ""}
+              </option>
               {provinceFilter.map((element, index) => {
                 return (
                   <option key={index} value={element}>
@@ -248,10 +302,20 @@ const UserorLibraryDetails = () => {
             <Form.Select
               aria-label="Default select example"
               onChange={(e) =>
-                setUserDto({ ...userDto, addressDto: { ...userDto.addressDto, municipalityId: e.currentTarget.value } })
+                setUserDto({
+                  ...userDto,
+                  addressDto: {
+                    ...userDto.addressDto,
+                    municipalityId: e.currentTarget.value,
+                  },
+                })
               }
             >
-              <option>{currentProfile.address != null ? currentProfile.address.municipality.name : ""}</option>
+              <option>
+                {currentProfile.address != null
+                  ? currentProfile.address.municipality.name
+                  : ""}
+              </option>
               {municipality.map((element, index) => {
                 return (
                   <option key={index} value={element.id}>
@@ -267,38 +331,70 @@ const UserorLibraryDetails = () => {
               type="text"
               placeholder="Via Roma"
               required
-              defaultValue={currentProfile.address != null ? currentProfile.address.street : ""}
+              defaultValue={
+                currentProfile.address != null
+                  ? currentProfile.address.street
+                  : ""
+              }
               onChange={(e) =>
-                setUserDto({ ...userDto, addressDto: { ...userDto.addressDto, street: e.currentTarget.value } })
+                setUserDto({
+                  ...userDto,
+                  addressDto: {
+                    ...userDto.addressDto,
+                    street: e.currentTarget.value,
+                  },
+                })
               }
             />
-            <Form.Control.Feedback type="invalid">Please provide a valid street.</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid street.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="3" controlId="validationStreetNumber">
             <Form.Label>Numero Civico </Form.Label>
             <Form.Control
               type="string"
               placeholder="56"
-              defaultValue={currentProfile.address != null ? currentProfile.address.number : ""}
+              defaultValue={
+                currentProfile.address != null
+                  ? currentProfile.address.number
+                  : ""
+              }
               onChange={(e) =>
-                setUserDto({ ...userDto, addressDto: { ...userDto.addressDto, streetNumber: e.currentTarget.value } })
+                setUserDto({
+                  ...userDto,
+                  addressDto: {
+                    ...userDto.addressDto,
+                    streetNumber: e.currentTarget.value,
+                  },
+                })
               }
             />
-            <Form.Control.Feedback type="invalid">Please provide a number.</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please provide a number.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="3" controlId="validationZipCode">
             <Form.Label>Zip Code</Form.Label>
             <Form.Control type="text" placeholder="Zip" />
-            <Form.Control.Feedback type="invalid">Please provide a valid zip.</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid zip.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="3" controlId="validationKm">
             <Form.Label>Km</Form.Label>
             <Form.Control type="text" placeholder="3400" />
-            <Form.Control.Feedback type="invalid">Please provide a number.</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please provide a number.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Description</Form.Label>
-            <Form.Control as="textarea" placeholder="Interno 4, Scala A" rows={3} />
+            <Form.Control
+              as="textarea"
+              placeholder="Interno 4, Scala A"
+              rows={3}
+            />
           </Form.Group>
         </Row>
 

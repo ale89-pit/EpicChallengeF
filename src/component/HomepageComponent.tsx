@@ -29,7 +29,10 @@ function HomePageComponent() {
 
   return (
     <div className="mt-3">
-      <h1 className="ms-2"> New Releases</h1>
+      <div className="text-center">
+        <span className="main-title">BiblioTech</span>
+      </div>
+      <h1 className="ms-2 subtitle"> New Releases</h1>
       <CarouselComponent items={allBooks} />
     </div>
   );
