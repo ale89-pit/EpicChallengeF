@@ -12,7 +12,7 @@ function BookCardComponent(props: bookProps) {
       );
       if (response.ok) {
         let data = await response.json();
-        console.log(data);
+        // console.log(data);
         setCover(data.items[0].volumeInfo.imageLinks.thumbnail);
       } else {
         console.log("Errore nella ricezione dei dati");
@@ -25,8 +25,8 @@ function BookCardComponent(props: bookProps) {
     getCover();
   }, []);
   return (
-    <Row className="my-4">
-      <Col xs={12} sm={4} className="text-center">
+    <Row className="my-3">
+      <Col xs={12} sm={4} className="ms-2">
         <img
           className="w-75 book-cover"
           src={cover}
@@ -37,8 +37,8 @@ function BookCardComponent(props: bookProps) {
           }
         />
       </Col>
-      <Col xs={8} sm={6}>
-        <h3 className="mt-2 mb-4">{props.book.title}</h3>
+      <Col xs={8} sm={6} className="ms-2">
+        <h3 className="mt-5 mb-3">{props.book.title}</h3>
         <span className="fw-bold">ISBN: </span>
         {props.book.isbn}
         <br />

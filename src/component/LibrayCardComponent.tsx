@@ -1,7 +1,8 @@
-import { Button, Card } from "react-bootstrap";
+import { Alert, Button, Card } from "react-bootstrap";
 import { libraryProps } from "../interfaces/PropsIntefaces";
 import { NewBookingDto } from "../interfaces/BookingDto";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function LibraryCardComponent({
   library,
@@ -12,6 +13,7 @@ export default function LibraryCardComponent({
   index,
   isUser,
 }: libraryProps) {
+  const [isBooked, setIsBooked] = useState(false);
   const navigate = useNavigate();
   const newCard = async (username: string, libraryId: number) => {
     try {
@@ -47,6 +49,8 @@ export default function LibraryCardComponent({
       if (response.ok) {
         let data = await response.json();
         console.log(data);
+        alert("Prenotazione creata con successo");
+        setIsBooked(true);
       } else {
         alert("Errore nella creazione della prenotazione");
       }
@@ -58,11 +62,13 @@ export default function LibraryCardComponent({
     <Card className="w-100">
       <Card.Body>
         <Card.Title>{library.name}</Card.Title>
-        {library.address != null && (
+        {
           <span className="d-flex justify-content-between">
             <span>
-              {library.address.street}, {library.address.number} - {library.address.municipality.name}
+              {library.address != null &&
+                `${library.address.street}, ${library.address.number} -${library.address.municipality.name}`}
             </span>
+
             <span>
               <Button
                 variant="danger"
@@ -77,11 +83,18 @@ export default function LibraryCardComponent({
               {/* mostra i buttons prenota o richiedi tessera se il profilo ha ruolo utente */}
               {isUser &&
                 cards.map((card, index) => {
-                  if (card.library.id === library.id && card.user.id === currentProfile.id) {
+                  if (
+                    card.library.id === library.id &&
+                    card.user.id === currentProfile.id
+                  ) {
                     return (
                       <>
                         <Button
-                          disabled={card.state === "WAITING_FOR_APPROVAL" || card.state === "REJECTED"}
+                          disabled={
+                            card.state === "WAITING_FOR_APPROVAL" ||
+                            card.state === "REJECTED" ||
+                            isBooked
+                          }
                           variant="danger"
                           className="ms-2"
                           key={index + card.library.id!}
@@ -127,7 +140,7 @@ export default function LibraryCardComponent({
               )}
             </span>
           </span>
-        )}
+        }
       </Card.Body>
     </Card>
   );

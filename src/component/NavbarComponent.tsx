@@ -18,21 +18,16 @@ import { RootState } from "../redux/store";
 import { initialState } from "../redux/reducers/profile";
 
 const NavbarComponent = () => {
-  const currentProfile: Profile = useSelector((state: RootState) => state.profile);
-  const isLogged: boolean = currentProfile.id != null ? false : true;
+  const currentProfile: Profile = useSelector(
+    (state: RootState) => state.profile
+  );
+  const isLogged: boolean = currentProfile.id != null;
   let isUser: boolean = false;
   let isLibrary: boolean = false;
   if (isLogged) {
     isUser = currentProfile?.roles[0]?.roleName === "ROLE_USER";
     isLibrary = currentProfile?.roles[0]?.roleName === "ROLE_MODERATOR";
   }
-  useEffect(()=>{
-
-  },[])
-
-  useEffect(()=>{
-
-  },[isLogged])
   return (
     <Navbar expand="lg" data-bs-theme="dark" className="bg-danger">
       <Container fluid>
@@ -46,12 +41,27 @@ const NavbarComponent = () => {
                 <Link to="/" className="text-decoration-none">
                   <div className="nav-link me-2">Home</div>
                 </Link>
+
                 <Link to="/libraries" className="text-decoration-none">
                   <div className="nav-link me-2">Libraries</div>
                 </Link>
+
                 <Link to="/books" className="text-decoration-none">
                   <div className="nav-link me-2">Books</div>
                 </Link>
+
+                {isLogged ? (
+                  <>
+                    <Link to="/bookings" className="text-decoration-none">
+                      <div className="nav-link me-2">Bookings</div>
+                    </Link>
+                    <Link to="/cards" className="text-decoration-none">
+                      <div className="nav-link me-2"> Memberhip Cards</div>
+                    </Link>
+                  </>
+                ) : (
+                  <></>
+                )}
               </span>
               <span className="me-5 pe-4">
                 <NavDropdown
@@ -401,12 +411,10 @@ function LoginModal() {
 function LogoutButton() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/");
     dispatch(setProfile(initialState.profile));
-    navigate("/");
   };
   return (
     <li className="nav-link list-unstyled" onClick={logout}>

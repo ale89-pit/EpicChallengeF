@@ -1,0 +1,30 @@
+.main-title {
+  font-size: 8em;
+  font-weight: 800;
+  outline: none;
+  text-align: center;
+  background: linear-gradient(
+    90deg,
+    rgb(131, 58, 180, 1) 10%,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+  font-weight: 800;
+  outline: none;
+  // text-align: center;
+  background: linear-gradient(
+    90deg,
+    rgb(131, 58, 180, 1) 10%,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
+}
