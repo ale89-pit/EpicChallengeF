@@ -6,4 +6,8 @@ export interface Card {
   library: Library;
   user: Profile;
   state: string;
+  insertDate: string;
+  startDate: string | null;
+  endDate: string | null;
+  blacklist: boolean;
 }

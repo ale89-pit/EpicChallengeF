@@ -9,6 +9,7 @@ import BookDetailsPage from "./component/BookDetailsPage";
 import UserorLibraryDetails from "./component/UserOrLibraryDetails";
 import LibraryPageComponent from "./component/LibraryPageComponent";
 import BookingsPage from "./component/BookingsPage";
+import MemberhipCardPage from "./component/MembershipCardPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/details/:isbn" element={<BookDetailsPage />} />
           <Route path="/library/:id" element={<LibraryPageComponent />} />
           <Route path="/bookings" element={<BookingsPage />} />
+          <Route path="/cards" element={<MemberhipCardPage />} />
         </Routes>
       </div>
     </BrowserRouter>
