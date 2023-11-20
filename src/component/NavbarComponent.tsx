@@ -50,7 +50,7 @@ const NavbarComponent = () => {
                   <div className="nav-link me-2">Books</div>
                 </Link>
 
-                {isLogged ? (
+                {isLogged  ?  (
                   <>
                     <Link to="/bookings" className="text-decoration-none">
                       <div className="nav-link me-2">Bookings</div>

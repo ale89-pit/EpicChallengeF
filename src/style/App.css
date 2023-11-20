@@ -11999,6 +11999,13 @@ textarea.form-control-lg {
   border-radius: 1rem;
 }
 
+.book-cover {
+  transition: all 300ms;
+}
+.book-cover:hover {
+  transform: scale(1.05);
+}
+
 .carouselCard {
   height: 350px;
   margin: 0.5em !important;
@@ -12017,4 +12024,24 @@ textarea.form-control-lg {
   overflow: scroll;
   margin: 0em;
   padding: 0em;
+}
+
+.main-title {
+  font-size: 8em;
+  font-weight: 800;
+  outline: none;
+  text-align: center;
+  background: linear-gradient(90deg, rgb(131, 58, 180) 10%, rgb(253, 29, 29) 50%, rgb(252, 176, 69) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+  font-weight: 800;
+  outline: none;
+  background: linear-gradient(90deg, rgb(131, 58, 180) 10%, rgb(253, 29, 29) 50%, rgb(252, 176, 69) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
 }/*# sourceMappingURL=App.css.map */
