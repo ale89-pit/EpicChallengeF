@@ -23,6 +23,16 @@ function App() {
           <Route path="/books" element={<BooksPage />} />
           <Route path="/details/:isbn" element={<BookDetailsPage />} />
           <Route path="/library/:id" element={<LibraryPageComponent />} />
+          <Route
+            path="/libraries"
+            element={
+              <h2>
+                lista librerie solo nome libreria e indirizzo (con filtro per regione) riutilizzare LibraryPageComponent
+                nascondendo la booklist se il path == /library
+              </h2>
+              // vedere tutte le librerie
+            }
+          />
           <Route path="/bookings" element={<BookingsPage />} />
           <Route path="/cards" element={<MemberhipCardPage />} />
         </Routes>

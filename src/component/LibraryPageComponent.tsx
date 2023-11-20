@@ -3,18 +3,23 @@ import { useParams } from "react-router-dom";
 import { Library } from "../interfaces/Library";
 import { Col, Row } from "react-bootstrap";
 import { CarouselCardComponent } from "./CarouselComponent";
+import { getAllBooksByLibraryId } from "../fetches/books";
+import { LibrarybookList } from "../interfaces/LibraryBookList";
 
 export default function LibraryPageComponent() {
   let { id } = useParams();
   const [library, setLibrary] = useState<Library>({} as Library);
+  const [books, setBooks] = useState<LibrarybookList[]>([]);
   const getLibrary = async () => {
     try {
       let response = await fetch(`http://localhost:8080/library/${id}`, {});
       if (response.ok) {
         let data = await response.json();
-        console.log("Libreria: ", data);
-        console.log(Object.keys(data.booklist));
-        setLibrary({ ...data, booklist: Object.keys(data.booklist) });
+        //console.log("Libreria: ", data);
+        setLibrary(data);
+        let booklist = await getAllBooksByLibraryId(data.id);
+        setBooks(booklist.books);
+        //console.log("Libri: ", booklist);
       }
     } catch (error) {
       console.log("ERRORE: " + error);
