@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Library } from "../interfaces/Library";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { getAllBooksByLibraryId } from "../fetches/books";
 import { LibrarybookList } from "../interfaces/LibraryBookList";
 import { Link } from "react-router-dom";
@@ -32,16 +32,17 @@ export default function LibraryPageComponent() {
     console.log(library);
   }, []);
   return (
-    <div className="ms-3">
+    <Container>
       <Row>
-        <Col xs={12} sm={10}>
+        <Col xs={12} md={8} className="mx-auto">
           <h3 className="mt-5 mb-3">{library.name}</h3>
           {library.address && (
             <>
               <h4 className="fw-bold">Address: </h4>
               <br />
               <span className="fw-bolder">Street: </span>
-              {library.address.street}, {library.address.number} -{library.address.municipality.name}{" "}
+              {library.address.street}, {library.address.number} -
+              {library.address.municipality.name}{" "}
               {`(${library.address.municipality.province.sign})`}
               <br />
               <span className="fw-bolder">Phone: </span> {library.phone}
@@ -54,10 +55,16 @@ export default function LibraryPageComponent() {
           {pathname !== "/libraries" &&
             books.length > 0 &&
             books.map((item, index) => (
-              <Row key={index} className="border border-1 rounded my-2 bg-light">
-                <Link to={`/details/${item.book.isbn}`} className="text-decoration-none text-dark">
+              <Row
+                key={index}
+                className="border border-1 rounded my-2 bg-light">
+                <Link
+                  to={`/details/${item.book.isbn}`}
+                  className="text-decoration-none text-dark">
                   <span className="d-flex justify-content-between mt-3">
-                    <h6 className="text-decoration-none text-truncate w-75">{item.book.title}</h6>
+                    <h6 className="text-decoration-none text-truncate w-75">
+                      {item.book.title}
+                    </h6>
                     <p>Quantity: {item.quantity}</p>
                   </span>
                 </Link>
@@ -65,6 +72,6 @@ export default function LibraryPageComponent() {
             ))}
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }
