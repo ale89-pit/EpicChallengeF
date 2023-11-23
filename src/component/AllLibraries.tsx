@@ -1,80 +1,78 @@
+import { useState, useEffect } from "react";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+import MapComponent from "./MapComponent";
+import { Library } from "../interfaces/Library";
+import { Coordinates } from "../interfaces/Coordinates";
 import {
   getAllLibraries,
   getAllLibrariesPageable,
   getAllLibrariesGeoCoding,
 } from "../fetches/library";
-import { useState, useEffect } from "react";
-import { Library } from "../interfaces/Library";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
-import LibraryCardComponent from "./LibraryPageComponent";
-import { Book } from "../interfaces/Book";
-import { Profile } from "../redux/reducers/profile";
-import { Link, useNavigate } from "react-router-dom";
-import MapComponent from "./MapComponent";
+
 const AllLibraries = () => {
   const [allLibrary, setAllLibrary] = useState<Library[]>([]);
-  //   const [lat, setLat] = useState<number>();
-  //   const [lon, setLon] = useState<number>();
-  const [userCoordinates, setUserCoordinates] = useState<{
-    latitude: number | undefined;
-    longitude: number | undefined;
-  }>({
-    latitude: undefined,
-    longitude: undefined,
+  const [userCoordinates, setUserCoordinates] = useState<Coordinates>({
+    latitude: null,
+    longitude: null,
   });
 
-  useEffect(() => {
+  const loadData = async () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        if (position && position.coords) {
-          console.log(position);
-          setUserCoordinates({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-          console.log(userCoordinates);
-          getAllLibrariesGeoCoding(
-            setAllLibrary,
-            userCoordinates.latitude,
-            userCoordinates.longitude
-          );
-        } else {
-          getAllLibrariesPageable(setAllLibrary);
-          console.error("Coordinate non disponibili.");
-        }
+        const { latitude, longitude } = position.coords;
+        console.log(latitude, longitude);
+        setUserCoordinates(position.coords);
+        console.log(userCoordinates);
       },
       (error) => {
-        getAllLibrariesPageable(setAllLibrary);
         console.error(`Errore nella geolocalizzazione: ${error.message}`);
       }
     );
-  }, []);
+
+    if (userCoordinates.latitude && userCoordinates.longitude) {
+      //prendi librerie vicine
+      let data = await getAllLibrariesGeoCoding(
+        userCoordinates.latitude,
+        userCoordinates.longitude
+      );
+      console.log(data);
+      setAllLibrary(data);
+      console.log(userCoordinates);
+    } else {
+      //prendi solo una pagina di librerie
+      console.log("geolocalizzazione non attiva");
+      let data = await getAllLibrariesPageable();
+      setAllLibrary(data);
+    }
+  };
+
   useEffect(() => {
-    // getAllLibraries(setAllLibrary);
-    console.log(allLibrary);
-    getAllLibrariesGeoCoding(
-      setAllLibrary,
-      userCoordinates.latitude,
-      userCoordinates.longitude
-    );
-  }, [!userCoordinates.latitude, !userCoordinates.longitude]);
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    console.log("cambiate coordinate");
+    loadData();
+  }, [userCoordinates.latitude, userCoordinates.longitude]);
+
   return (
     <Container className="my-3">
-      {userCoordinates.latitude !== undefined &&
-        userCoordinates.longitude !== undefined && (
+      {userCoordinates.latitude !== null &&
+        userCoordinates.longitude !== null && (
           <MapComponent
-            center={[
-              userCoordinates.latitude || 46,
-              userCoordinates.longitude || 14,
-            ]}
+            center={[userCoordinates.latitude, userCoordinates.longitude]}
             library={allLibrary}
           />
         )}
 
       {allLibrary.length === 0 ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
+        <div className="text-center">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
       ) : (
         <>
           {allLibrary.map((library) => (
@@ -83,7 +81,8 @@ const AllLibraries = () => {
                 <Col className="border rounded bg-lightGrey" xs={12} sm={10}>
                   <Link
                     className="text-decoration-none"
-                    to={`/library/${library.id}`}>
+                    to={`/library/${library.id}`}
+                  >
                     {" "}
                     <h3 className="mt-5 mb-3">
                       {/* {library.name ? library.name : ""} */}
