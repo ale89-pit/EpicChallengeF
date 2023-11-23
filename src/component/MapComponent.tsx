@@ -29,7 +29,9 @@ const MapComponent: React.FC<{
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={center} icon={customUserIcon}></Marker>
+        <Marker position={center} icon={customUserIcon}>
+          <Popup>you are here!!</Popup>
+        </Marker>
 
         {library.map((lib, index) => (
           <Marker
@@ -43,19 +45,21 @@ const MapComponent: React.FC<{
                 : 0,
             ]}
             icon={customIcon}>
-            <Popup>
+            <Popup className="popup">
               <Card>
                 <Card.Body>
                   <Card.Title>{lib.name}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    {/* {lib.address.city} */}
-                  </Card.Subtitle>
+
                   <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
+                    {`${lib.address.municipality.province.region}   ${lib.address.municipality.province.name}`}
+                    <br />{" "}
+                    {`
+                    ${lib.address.municipality.name}`}{" "}
+                    <br />
+                    {`${lib.address.street} ${lib.address.number}`}
                   </Card.Text>
-                  <Card.Link href="#">Card Link</Card.Link>
-                  <Card.Link href="#">Another Link</Card.Link>
+                  <Card.Link href="#">{lib.phone}</Card.Link>
+                  <Card.Link href="#">{lib.email}</Card.Link>
                 </Card.Body>
               </Card>
             </Popup>

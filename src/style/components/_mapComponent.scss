@@ -7,3 +7,21 @@
     z-index: 1000 !important;
     color: black;
 }
+.popup{
+    max-width: fit-content;
+    
+}
+
+.leaflet-popup-content-wrapper {
+    
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+    
+    position: relative !important;
+    left: 0 !important;
+    top: 0 !important;
+}
+
+.leaflet-popup-tip-container {
+}
