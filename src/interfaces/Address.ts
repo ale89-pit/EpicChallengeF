@@ -8,5 +8,5 @@ export interface Address {
   km: string;
   description: string;
   lat: string;
-  lon: string;
+  lon: string; 
 }
