@@ -33,38 +33,41 @@ const MapComponent: React.FC<{
           <Popup>you are here!!</Popup>
         </Marker>
 
-        {library.map((lib, index) => (
-          <Marker
-            key={index}
-            position={[
-              lib.address.lat !== null
-                ? parseFloat(lib.address.lat.replace(",", "."))
-                : 0,
-              lib.address.lon !== null
-                ? parseFloat(lib.address.lon.replace(",", "."))
-                : 0,
-            ]}
-            icon={customIcon}>
-            <Popup className="popup">
-              <Card>
-                <Card.Body>
-                  <Card.Title>{lib.name}</Card.Title>
+        {library
+          .filter((lib) => lib.address != null)
+          .map((lib, index) => (
+            <Marker
+              key={index}
+              position={[
+                lib.address.lat !== null
+                  ? parseFloat(lib.address.lat.replace(",", "."))
+                  : 0,
+                lib.address.lon !== null
+                  ? parseFloat(lib.address.lon.replace(",", "."))
+                  : 0,
+              ]}
+              icon={customIcon}
+            >
+              <Popup className="popup">
+                <Card>
+                  <Card.Body>
+                    <Card.Title>{lib.name}</Card.Title>
 
-                  <Card.Text>
-                    {`${lib.address.municipality.province.region}   ${lib.address.municipality.province.name}`}
-                    <br />{" "}
-                    {`
+                    <Card.Text>
+                      {`${lib.address.municipality.province.region}   ${lib.address.municipality.province.name}`}
+                      <br />{" "}
+                      {`
                     ${lib.address.municipality.name}`}{" "}
-                    <br />
-                    {`${lib.address.street} ${lib.address.number}`}
-                  </Card.Text>
-                  <Card.Link href="#">{lib.phone}</Card.Link>
-                  <Card.Link href="#">{lib.email}</Card.Link>
-                </Card.Body>
-              </Card>
-            </Popup>
-          </Marker>
-        ))}
+                      <br />
+                      {`${lib.address.street} ${lib.address.number}`}
+                    </Card.Text>
+                    <Card.Link href="#">{lib.phone}</Card.Link>
+                    <Card.Link href="#">{lib.email}</Card.Link>
+                  </Card.Body>
+                </Card>
+              </Popup>
+            </Marker>
+          ))}
         {/* <Marker position={[51.505, -0.09]} icon={customIcon}>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
