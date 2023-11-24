@@ -1,91 +1,65 @@
+import { useState, useEffect } from "react";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+import MapComponent from "./MapComponent";
+import { Library } from "../interfaces/Library";
+import { Coordinates } from "../interfaces/Coordinates";
 import {
   getAllLibraries,
   getAllLibrariesPageable,
   getAllLibrariesGeoCoding,
 } from "../fetches/library";
-import { useState, useEffect } from "react";
-import { Library } from "../interfaces/Library";
-import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
-import LibraryCardComponent from "./LibraryPageComponent";
-import { Book } from "../interfaces/Book";
-import { Profile } from "../redux/reducers/profile";
-import { Link, useNavigate } from "react-router-dom";
-import MapComponent from "./MapComponent";
 const AllLibraries = () => {
   const [allLibrary, setAllLibrary] = useState<Library[]>([]);
-  //   const [lat, setLat] = useState<number>();
-  //   const [lon, setLon] = useState<number>();
-  const [userCoordinates, setUserCoordinates] = useState<{
-    latitude: number | undefined;
-    longitude: number | undefined;
-  }>({
-    latitude: undefined,
-    longitude: undefined,
+  const [userCoordinates, setUserCoordinates] = useState<Coordinates>({
+    latitude: null,
+    longitude: null,
   });
 
-  useEffect(() => {
+  const loadData = async () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        if (position && position.coords) {
-          console.log(position);
-          setUserCoordinates({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-          console.log(userCoordinates);
-          //   getAllLibrariesGeoCoding(
-          //     setAllLibrary,
-          //     userCoordinates.latitude,
-          //     userCoordinates.longitude
-          //   );
-        } else {
-          console.log("*******************  sono nell'else");
-          setUserCoordinates({
-            latitude: 46,
-            longitude: 14,
-          });
-          getAllLibraries(setAllLibrary);
-
-          console.error("Coordinate non disponibili.");
-        }
+        const { latitude, longitude } = position.coords;
+        console.log(latitude, longitude);
+        setUserCoordinates(position.coords);
+        console.log(userCoordinates);
       },
       (error) => {
-        setUserCoordinates({
-          latitude: 46,
-          longitude: 14,
-        });
-        getAllLibrariesPageable(setAllLibrary);
         console.error(`Errore nella geolocalizzazione: ${error.message}`);
       }
     );
-  }, []);
+
+    if (userCoordinates.latitude && userCoordinates.longitude) {
+      //prendi librerie vicine
+      let data = await getAllLibrariesGeoCoding(
+        userCoordinates.latitude,
+        userCoordinates.longitude
+      );
+      console.log(data);
+      setAllLibrary(data);
+      console.log(userCoordinates);
+    } else {
+      //prendi solo una pagina di librerie
+      console.log("geolocalizzazione non attiva");
+      let data = await getAllLibrariesPageable();
+      setAllLibrary(data);
+    }
+  };
+
   useEffect(() => {
-    // getAllLibraries(setAllLibrary);
-    // console.log(allLibrary);
-    // if (
-    //   userCoordinates.latitude !== undefined &&
-    //   userCoordinates.longitude !== undefined
-    // ) {
-    //   getAllLibrariesGeoCoding(
-    //     setAllLibrary,
-    //     userCoordinates.latitude,
-    //     userCoordinates.longitude
-    //   );
-    // }
-  }, [!userCoordinates.latitude, !userCoordinates.longitude, !allLibrary]);
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    console.log("cambiate coordinate");
+    loadData();
+  }, [userCoordinates.latitude, userCoordinates.longitude]);
+
   return (
     <Container className="my-3">
-      <Form className="my-3 mx-auto d-flex align-items-center justify-content-center">
-        <Form.Group className="mx-2" controlId="formBasicEmail">
-          <Form.Control type="email" placeholder="Find your library" />
-        </Form.Group>
-
-        <Button variant="warning" type="submit">
-          Submit
-        </Button>
-      </Form>
-      {userCoordinates.latitude !== undefined &&
-        userCoordinates.longitude !== undefined && (
+      {userCoordinates.latitude !== null &&
+        userCoordinates.longitude !== null && (
           <MapComponent
             center={[userCoordinates.latitude, userCoordinates.longitude]}
             library={allLibrary}
@@ -93,9 +67,11 @@ const AllLibraries = () => {
         )}
 
       {allLibrary.length === 0 ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
+        <div className="text-center">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
       ) : (
         <>
           {allLibrary.map((library) => (

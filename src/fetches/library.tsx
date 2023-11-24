@@ -1,10 +1,10 @@
-export const getAllLibraries = async (stateSetter: Function) => {
+export const getAllLibraries = async () => {
   try {
     let response = await fetch(`http://localhost:8080/library/all`);
     if (response.ok) {
       let data = await response.json();
       console.log(data);
-      stateSetter(data);
+      // stateSetter(data);
       return data;
     } else {
       return {
@@ -17,14 +17,14 @@ export const getAllLibraries = async (stateSetter: Function) => {
   }
 };
 
-export const getAllLibrariesPageable = async (stateSetter: Function) => {
+export const getAllLibrariesPageable = async () => {
   try {
     let response = await fetch(`http://localhost:8080/library/allL`);
     if (response.ok) {
       let data = await response.json();
       console.log(data);
-      stateSetter(data.content);
-      return data;
+      // stateSetter(data.content);
+      return data.content;
     } else {
       return {
         libraries: [],
@@ -37,9 +37,9 @@ export const getAllLibrariesPageable = async (stateSetter: Function) => {
 };
 
 export const getAllLibrariesGeoCoding = async (
-  stateSetter: Function,
-  latitude: number | undefined,
-  longitude: number | undefined
+  // stateSetter: Function,
+  latitude: number,
+  longitude: number
 ) => {
   try {
     let response = await fetch(
@@ -48,7 +48,7 @@ export const getAllLibrariesGeoCoding = async (
     if (response.ok) {
       let data = await response.json();
       console.log(data);
-      stateSetter(data);
+      // stateSetter(data);
       return data;
     } else {
       return {
