@@ -5,6 +5,7 @@ import { Library } from "../interfaces/Library";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 import { Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const MapComponent: React.FC<{
   center: [number, number];
@@ -24,7 +25,7 @@ const MapComponent: React.FC<{
   console.log(library);
   return (
     <>
-      <MapContainer center={center} zoom={10} scrollWheelZoom={true}>
+      <MapContainer center={center} zoom={13} scrollWheelZoom={true}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -48,13 +49,16 @@ const MapComponent: React.FC<{
             <Popup className="popup">
               <Card>
                 <Card.Body>
-                  <Card.Title>{lib.name}</Card.Title>
+                  <Link to={`/library/${lib.id}`}>
+                    {" "}
+                    <Card.Title>{lib.name}</Card.Title>
+                  </Link>
 
                   <Card.Text>
-                    {`${lib.address.municipality.province.region}   ${lib.address.municipality.province.name}`}
+                    {`${lib.address?.municipality?.province?.region}   ${lib.address?.municipality?.province.name}`}
                     <br />{" "}
                     {`
-                    ${lib.address.municipality.name}`}{" "}
+                    ${lib.address?.municipality?.name}`}{" "}
                     <br />
                     {`${lib.address.street} ${lib.address.number}`}
                   </Card.Text>

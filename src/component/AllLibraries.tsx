@@ -5,7 +5,7 @@ import {
 } from "../fetches/library";
 import { useState, useEffect } from "react";
 import { Library } from "../interfaces/Library";
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import LibraryCardComponent from "./LibraryPageComponent";
 import { Book } from "../interfaces/Book";
 import { Profile } from "../redux/reducers/profile";
@@ -33,17 +33,27 @@ const AllLibraries = () => {
             longitude: position.coords.longitude,
           });
           console.log(userCoordinates);
-          getAllLibrariesGeoCoding(
-            setAllLibrary,
-            userCoordinates.latitude,
-            userCoordinates.longitude
-          );
+          //   getAllLibrariesGeoCoding(
+          //     setAllLibrary,
+          //     userCoordinates.latitude,
+          //     userCoordinates.longitude
+          //   );
         } else {
-          getAllLibrariesPageable(setAllLibrary);
+          console.log("*******************  sono nell'else");
+          setUserCoordinates({
+            latitude: 46,
+            longitude: 14,
+          });
+          getAllLibraries(setAllLibrary);
+
           console.error("Coordinate non disponibili.");
         }
       },
       (error) => {
+        setUserCoordinates({
+          latitude: 46,
+          longitude: 14,
+        });
         getAllLibrariesPageable(setAllLibrary);
         console.error(`Errore nella geolocalizzazione: ${error.message}`);
       }
@@ -51,22 +61,33 @@ const AllLibraries = () => {
   }, []);
   useEffect(() => {
     // getAllLibraries(setAllLibrary);
-    console.log(allLibrary);
-    getAllLibrariesGeoCoding(
-      setAllLibrary,
-      userCoordinates.latitude,
-      userCoordinates.longitude
-    );
-  }, [!userCoordinates.latitude, !userCoordinates.longitude]);
+    // console.log(allLibrary);
+    // if (
+    //   userCoordinates.latitude !== undefined &&
+    //   userCoordinates.longitude !== undefined
+    // ) {
+    //   getAllLibrariesGeoCoding(
+    //     setAllLibrary,
+    //     userCoordinates.latitude,
+    //     userCoordinates.longitude
+    //   );
+    // }
+  }, [!userCoordinates.latitude, !userCoordinates.longitude, !allLibrary]);
   return (
     <Container className="my-3">
+      <Form className="my-3 mx-auto d-flex align-items-center justify-content-center">
+        <Form.Group className="mx-2" controlId="formBasicEmail">
+          <Form.Control type="email" placeholder="Find your library" />
+        </Form.Group>
+
+        <Button variant="warning" type="submit">
+          Submit
+        </Button>
+      </Form>
       {userCoordinates.latitude !== undefined &&
         userCoordinates.longitude !== undefined && (
           <MapComponent
-            center={[
-              userCoordinates.latitude || 46,
-              userCoordinates.longitude || 14,
-            ]}
+            center={[userCoordinates.latitude, userCoordinates.longitude]}
             library={allLibrary}
           />
         )}
@@ -86,30 +107,29 @@ const AllLibraries = () => {
                     to={`/library/${library.id}`}>
                     {" "}
                     <h3 className="mt-5 mb-3">
-                      {/* {library.name ? library.name : ""} */}
+                      {library.name ? library.name : ""}
                     </h3>
                   </Link>
-                  {library.address && (
-                    <>
-                      <h4 className="fw-bold">Address: </h4>
-                      <br />
-                      <span className="fw-bolder">Street: </span>
-                      {library.address !== null ? (
-                        <>
-                          {library.address.street}, {library.address.number} -
-                          {library.address.municipality.name}{" "}
-                          {`(${library.address.municipality.province.sign})`}
-                        </>
-                      ) : (
-                        ""
-                      )}
-                      <br />
-                      <span className="fw-bolder">Phone: </span> {library.phone}
-                      <br />
-                      <span className="fw-bolder">Email: </span> {library.email}
-                      <br />
-                    </>
-                  )}
+
+                  <>
+                    <h4 className="fw-bold">Address: </h4>
+                    <br />
+                    <span className="fw-bolder">Street: </span>
+                    {library.address !== null ? (
+                      <>
+                        {library.address.street}, {library.address.number} -
+                        {library.address.municipality?.name}{" "}
+                        {library.address.municipality?.province?.sign}
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    <br />
+                    <span className="fw-bolder">Phone: </span> {library.phone}
+                    <br />
+                    <span className="fw-bolder">Email: </span> {library.email}
+                    <br />
+                  </>
                 </Col>
               </Row>
             </div>
